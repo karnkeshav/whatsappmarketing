@@ -108,28 +108,28 @@ def load_groups() -> list[dict]:
     if not GROUPS_FILE.exists():
         return []
     try:
-        return json.loads(GROUPS_FILE.read_text() or "[]")
+        return json.loads(GROUPS_FILE.read_text(encoding="utf-8") or "[]")
     except Exception:
         return []
 
 
 def save_groups(items: list[dict]) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    GROUPS_FILE.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n")
+    GROUPS_FILE.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def load_state() -> dict:
     if not STATE_FILE.exists():
         return {}
     try:
-        return json.loads(STATE_FILE.read_text() or "{}")
+        return json.loads(STATE_FILE.read_text(encoding="utf-8") or "{}")
     except Exception:
         return {}
 
 
 def save_state(state: dict) -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n")
+    STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def now_iso() -> str:
