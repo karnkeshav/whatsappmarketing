@@ -1,18 +1,18 @@
 name: Report a group
-description: Tell us whether a listed group worked, needed approval, or was invalid
+description: Tell us whether a listed group worked, needed approval, was read-only, or invalid
 title: "[report:<kind>] <group name>"
 labels: ["report"]
 body:
   - type: markdown
     attributes:
       value: |
-        Issues opened via the site's "Did it work?" buttons land here. You can also file one manually.
+        Issues opened via the site's "Did it work?" buttons land here.
 
   - type: input
     id: group_id
     attributes:
       label: Group ID
-      description: Auto-filled when opened from the site. UUID of the group.
+      description: Auto-filled when opened from the site (UUID).
     validations:
       required: true
 
@@ -21,9 +21,10 @@ body:
     attributes:
       label: Kind of report
       options:
-        - works
-        - approval
-        - invalid
+        - works         # I joined without admin approval
+        - approval      # Needed admin approval to join
+        - readonly      # Only admins can send messages
+        - invalid       # Invite link expired / invalid
     validations:
       required: true
 

@@ -1,4 +1,4 @@
-name: Apply issue reports
+name: Apply issue actions
 
 on:
   issues:
@@ -12,11 +12,11 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    # Only run when the issue carries 'submit' or 'report' labels (or for manual dispatch)
     if: >
       github.event_name == 'workflow_dispatch' ||
       contains(github.event.issue.labels.*.name, 'submit') ||
-      contains(github.event.issue.labels.*.name, 'report')
+      contains(github.event.issue.labels.*.name, 'report') ||
+      contains(github.event.issue.labels.*.name, 'scan-request')
     steps:
       - uses: actions/checkout@v4
 
@@ -29,16 +29,17 @@ jobs:
       - name: Install deps
         run: pip install -r scripts/requirements.txt
 
-      - name: Apply pending submits / reports
+      - name: Apply pending submits / reports / scan-requests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/apply_reports.py
+        working-directory: scripts
+        run: python apply_reports.py
 
       - name: Commit data updates
         run: |
           git config user.name  "wa-jobs-bot"
           git config user.email "wa-jobs-bot@users.noreply.github.com"
-          git add docs/data/groups.json
+          git add docs/data/groups.json docs/data/scan_state.json
           if git diff --staged --quiet; then
             echo "No data changes."
             exit 0

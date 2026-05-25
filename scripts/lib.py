@@ -22,7 +22,55 @@ DATA_DIR = ROOT / "docs" / "data"
 GROUPS_FILE = DATA_DIR / "groups.json"
 STATE_FILE = DATA_DIR / "scan_state.json"
 
-REGIONS = ["Hyderabad", "Bihar", "Delhi", "Jharkhand"]
+# All Indian states + UTs and their capitals.
+# Click a STATE name or CAPITAL name → it becomes a valid scan target.
+INDIAN_LOCATIONS = {
+    # 28 states
+    "Andhra Pradesh": "Amaravati",
+    "Arunachal Pradesh": "Itanagar",
+    "Assam": "Dispur",
+    "Bihar": "Patna",
+    "Chhattisgarh": "Raipur",
+    "Goa": "Panaji",
+    "Gujarat": "Gandhinagar",
+    "Haryana": "Chandigarh",
+    "Himachal Pradesh": "Shimla",
+    "Jharkhand": "Ranchi",
+    "Karnataka": "Bengaluru",
+    "Kerala": "Thiruvananthapuram",
+    "Madhya Pradesh": "Bhopal",
+    "Maharashtra": "Mumbai",
+    "Manipur": "Imphal",
+    "Meghalaya": "Shillong",
+    "Mizoram": "Aizawl",
+    "Nagaland": "Kohima",
+    "Odisha": "Bhubaneswar",
+    "Punjab": "Chandigarh",
+    "Rajasthan": "Jaipur",
+    "Sikkim": "Gangtok",
+    "Tamil Nadu": "Chennai",
+    "Telangana": "Hyderabad",
+    "Tripura": "Agartala",
+    "Uttar Pradesh": "Lucknow",
+    "Uttarakhand": "Dehradun",
+    "West Bengal": "Kolkata",
+    # 8 union territories
+    "Andaman and Nicobar Islands": "Port Blair",
+    "Chandigarh": "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu": "Daman",
+    "Delhi": "New Delhi",
+    "Jammu and Kashmir": "Srinagar",
+    "Ladakh": "Leh",
+    "Lakshadweep": "Kavaratti",
+    "Puducherry": "Puducherry",
+}
+
+# Every accepted region name (states + capitals, case-insensitive matching)
+VALID_LOCATIONS = sorted(set(INDIAN_LOCATIONS.keys()) | set(INDIAN_LOCATIONS.values()))
+VALID_LOWER = {x.lower(): x for x in VALID_LOCATIONS}
+
+# Legacy 4 default regions (kept for the cron-default discover run)
+DEFAULT_REGIONS = ["Hyderabad", "Bihar", "Delhi", "Jharkhand"]
 CATEGORY = "jobs"
 
 INVITE_REGEX = re.compile(
@@ -44,6 +92,14 @@ EXCLUDED_DOMAINS = {
     "tiktok.com", "reddit.com", "schema.org", "w3.org", "system1.com",
     "googleapis.com", "gstatic.com", "wikipedia.org",
 }
+
+
+# ---------- region normalisation ----------
+def normalise_region(name: str) -> Optional[str]:
+    """Return the canonical-case name if valid, else None."""
+    if not name:
+        return None
+    return VALID_LOWER.get(name.strip().lower())
 
 
 # ---------- JSON I/O ----------
@@ -169,13 +225,18 @@ def make_group(
         "invite_code": invite_code,
         "region": region,
         "category": CATEGORY,
+        # status: "open" = visible, "hidden" = hidden by 2+ approval reports, "invalid" = dead link
         "status": "open",
+        # NEW: messaging mode. "open" (anyone can post) or "readonly" (only admins post).
+        # Default "open" until crowd-flagged.
+        "chat_mode": "open",
         "description": description,
         "source_url": source_url,
         "discovered_via": discovered_via,
         "reports_works": 0,
         "reports_approval": 0,
         "reports_invalid": 0,
+        "reports_readonly": 0,
         "last_checked": n,
         "created_at": n,
     }
@@ -188,6 +249,9 @@ def upsert_group(groups: list[dict], group: dict) -> bool:
             g["last_checked"] = group["last_checked"]
             if group.get("source_url") and not g.get("source_url"):
                 g["source_url"] = group["source_url"]
+            # backfill new field on older records
+            g.setdefault("chat_mode", "open")
+            g.setdefault("reports_readonly", 0)
             return False
     groups.append(group)
     return True
@@ -208,6 +272,5 @@ def http_client() -> httpx.AsyncClient:
     return httpx.AsyncClient(headers=HEADERS, follow_redirects=True)
 
 
-# tiny helper for scripts that want to do small async tasks
 def run(coro):
     return asyncio.run(coro)

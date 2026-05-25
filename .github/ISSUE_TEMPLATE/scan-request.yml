@@ -1,0 +1,30 @@
+name: Scan a state / city
+description: Trigger the bot to discover new WhatsApp jobs groups for a specific Indian state or capital.
+title: "[scan] <region>"
+labels: ["scan-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The bot will search the public web for new `chat.whatsapp.com` invite links matching this
+        location and append them to the directory within ~1-2 minutes.
+
+  - type: input
+    id: region
+    attributes:
+      label: State or capital name
+      description: Must be an Indian state or capital (e.g. Maharashtra, Mumbai, Karnataka, Bengaluru).
+      placeholder: e.g. Mumbai
+    validations:
+      required: true
+
+  - type: input
+    id: max_per_region
+    attributes:
+      label: Max groups to add (3-30)
+      placeholder: "12"
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
