@@ -1,11 +1,3 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "@/index.css";
-import App from "@/App";
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+// React entry stubbed out — this project is now a static HTML + JS site served from /app/docs.
+// The Emergent preview serves /app/frontend/public/index.html directly (no React mount).
+export {};

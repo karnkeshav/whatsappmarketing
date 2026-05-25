@@ -1,0 +1,33 @@
+name: Report a group
+description: Tell us whether a listed group worked, needed approval, or was invalid
+title: "[report:<kind>] <group name>"
+labels: ["report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues opened via the site's "Did it work?" buttons land here. You can also file one manually.
+
+  - type: input
+    id: group_id
+    attributes:
+      label: Group ID
+      description: Auto-filled when opened from the site. UUID of the group.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of report
+      options:
+        - works
+        - approval
+        - invalid
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)

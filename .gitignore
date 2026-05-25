@@ -6,7 +6,7 @@ __pycache__/
 venv/
 .env
 
-# Node
+# Node (only frontend/ uses node — kept for local preview)
 node_modules/
 build/
 .yarn/cache
@@ -18,9 +18,8 @@ frontend/.env
 .vscode/
 .idea/
 *.log
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
+
+# Emergent test artefacts (not relevant for the static-site stack)
+/tests/
+/test_reports/
+test_result.md

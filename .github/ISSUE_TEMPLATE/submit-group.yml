@@ -1,0 +1,39 @@
+name: Submit a WhatsApp group
+description: Add a new public WhatsApp jobs group to the directory
+title: "[submit] <region> — new group"
+labels: ["submit"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! Paste the invite link and pick a region — a bot will validate and
+        add it within a few minutes.
+
+  - type: input
+    id: link
+    attributes:
+      label: WhatsApp invite link
+      description: Must look like `https://chat.whatsapp.com/XXXXXXXXXXXXXXXX`
+      placeholder: https://chat.whatsapp.com/XXXXXXXXXXXXXXXX
+    validations:
+      required: true
+
+  - type: dropdown
+    id: region
+    attributes:
+      label: Region
+      options: [Hyderabad, Bihar, Delhi, Jharkhand]
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      placeholder: Anything else we should know about this group?
+
+  - type: markdown
+    attributes:
+      value: |
+        > The bot reads this issue, validates the link, appends the group to `docs/data/groups.json`,
+        > then closes this issue with a confirmation comment.

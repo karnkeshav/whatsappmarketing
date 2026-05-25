@@ -1,182 +1,137 @@
 # WA/Jobs — WhatsApp Jobs Group Finder (Hyderabad · Bihar · Delhi · Jharkhand)
 
-A free & open-source web app that discovers **public WhatsApp jobs groups** across four Indian
-regions and lets visitors crowd-verify which groups are open-join (no admin approval).
+A **fully GitHub-native, zero-cost** web app that discovers public WhatsApp jobs groups across four
+Indian regions and lets visitors crowd-verify which are open-join.
 
-> **Important technical note:** WhatsApp does **not** provide an API to discover or check groups,
-> and its invite-preview page is rendered client-side — so admin-approval status can't be detected
-> from a single HTTP request without using a real WhatsApp account (which would risk a ban).
->
-> This project takes the honest free-tier approach:
-> 1. **Discover** `chat.whatsapp.com/...` invite links from the public web (search engines + public
->    group directories).
-> 2. **Show** them all on the site with the group name pulled from WhatsApp's open-graph metadata.
-> 3. **Crowd-verify**: every card has *Worked / Needed approval / Invalid* buttons. After 2
->    "needed approval" reports a group is auto-hidden — so the directory self-cleans.
+- **Frontend** → plain HTML + CSS + vanilla JavaScript, served by **GitHub Pages**.
+- **Database** → a JSON file checked into this repo (`docs/data/groups.json`).
+- **Bot** → a Python script that runs in **GitHub Actions** (cron + manual trigger), commits new groups back to the repo.
+- **User actions** → submit / report are **pre-filled GitHub Issues**; another Action processes them and updates the JSON.
+
+No servers. No paid APIs. No database. No build step.
 
 ---
 
-## Features
-- One-click discovery scan across 4 regions (Hyderabad, Bihar, Delhi, Jharkhand)
-- Crowd-verified open-join status with auto-hide after 2 admin-approval reports
-- User-submission form (instant validation)
-- Region filters · live stats · scan status
-- 100% free-tier stack (no paid APIs)
-
-## Tech Stack
-| Layer    | Tech                                              |
-|----------|---------------------------------------------------|
-| Frontend | React 19, Tailwind CSS, Shadcn UI, Phosphor Icons |
-| Backend  | FastAPI, httpx, BeautifulSoup4                    |
-| Database | MongoDB                                           |
-| Search   | Startpage (no API key) + public-page crawling     |
-
----
-
-## Repository Structure
+## Architecture
 
 ```
-wa-jobs/
-├── backend/
-│   ├── server.py            # FastAPI app + discovery bot + validator
-│   ├── requirements.txt     # Python dependencies
-│   └── .env.example         # Copy → .env (MONGO_URL, DB_NAME, CORS_ORIGINS)
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/      # Hero, RegionFilters, GroupCard, SubmitGroupForm, HowItWorks, TickerRibbon
-│   │   ├── pages/Home.jsx
-│   │   ├── lib/api.js
-│   │   ├── App.js
-│   │   ├── index.js
-│   │   ├── App.css
-│   │   └── index.css
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── .env.example         # Copy → .env (REACT_APP_BACKEND_URL)
-├── .gitignore
-├── LICENSE
-└── README.md
+whatsappmarketing/
+├── docs/                          # ← GitHub Pages serves this folder
+│   ├── index.html                 # static HTML site
+│   ├── styles.css
+│   ├── app.js                     # vanilla JS — fetches data/*.json
+│   └── data/
+│       ├── groups.json            # the "database"
+│       └── scan_state.json
+├── scripts/                       # Python bot (runs in GitHub Actions)
+│   ├── lib.py                     # shared helpers
+│   ├── discover.py                # crawls public web, appends groups to JSON
+│   ├── apply_reports.py           # reads issues with submit/report labels, updates JSON
+│   └── requirements.txt
+├── .github/
+│   ├── workflows/
+│   │   ├── discover.yml           # cron daily + manual workflow_dispatch
+│   │   └── apply-reports.yml      # on issue opened/labeled
+│   └── ISSUE_TEMPLATE/
+│       ├── submit-group.yml
+│       ├── report-group.yml
+│       └── config.yml
+├── frontend/                      # ← only for local Emergent preview, NOT pushed
+├── README.md
+└── LICENSE
 ```
+
+> The `frontend/` folder is a leftover from the previous React stack. It is **kept for
+> local-preview purposes only**. Everything you need for production is under `docs/`, `scripts/`
+> and `.github/`. You can safely delete `frontend/` from the GitHub repo if you wish.
 
 ---
 
-## Local Setup (end-to-end)
+## 1 · One-time setup (on GitHub)
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+ and **Yarn** (do not use npm)
-- MongoDB running locally (or MongoDB Atlas free tier)
+1. **Push this repo** to GitHub (you've already done this — `karnkeshav/whatsappmarketing`).
+2. **Enable GitHub Pages:**
+   - Go to **Settings → Pages**
+   - **Source** → "Deploy from a branch"
+   - **Branch** → `main` · **Folder** → `/docs`
+   - **Save** — wait ~1 min, your site appears at:
+     `https://karnkeshav.github.io/whatsappmarketing/`
+3. **Allow GitHub Actions to push:**
+   - Go to **Settings → Actions → General**
+   - Under "Workflow permissions" → choose **Read and write permissions**
+   - Tick **Allow GitHub Actions to create and approve pull requests**
+   - **Save**
 
-### 1. Clone
+That's it. The site is live, no backend to deploy.
+
+---
+
+## 2 · Run the discovery bot
+
+The bot finds new WhatsApp jobs groups and commits them to `docs/data/groups.json`.
+
+### Manual run (do this once to populate the directory)
+1. Go to **Actions → Discovery scan**
+2. Click **Run workflow** → leave defaults → **Run workflow**
+3. Wait ~1-2 min. When it finishes, refresh your site — the new groups appear.
+
+### Automatic run
+- The workflow runs on a cron schedule: **every day at 03:00 UTC** (configured in `.github/workflows/discover.yml`). Change the cron line to adjust.
+
+---
+
+## 3 · How user actions work (no backend needed)
+
+Every interactive button on the site opens a **pre-filled GitHub Issue**:
+
+| Action            | Issue label   | What the Action does                                       |
+|-------------------|---------------|------------------------------------------------------------|
+| Submit a group    | `submit`      | Validates the link, appends to `groups.json`, closes issue |
+| Worked            | `report,works`| Increments `reports_works` on the group                    |
+| Needed approval   | `report,approval` | Increments `reports_approval`; **hides** after 2 reports |
+| Invalid / expired | `report,invalid` | Increments `reports_invalid`; marks invalid after 2 reports |
+
+The visitor only needs a free GitHub account to confirm the issue — no other auth required.
+The bot replies on the issue with a ✅/❌ confirmation comment and closes it.
+
+---
+
+## 4 · Local preview (optional)
+
+You don't need any server to run this site. Just open the HTML:
+
 ```bash
-git clone https://github.com/<your-user>/wa-jobs.git
-cd wa-jobs
+# From the repo root
+cd docs
+python3 -m http.server 5500
+# Open http://localhost:5500/
 ```
 
-### 2. Backend
+Or to populate JSON locally (requires Python 3.10+):
 ```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-# Edit .env →
-#   MONGO_URL="mongodb://localhost:27017"
-#   DB_NAME="wa_jobs"
-#   CORS_ORIGINS="*"
-uvicorn server:app --host 0.0.0.0 --port 8001 --reload
-```
-
-### 3. Frontend
-```bash
-cd ../frontend
-yarn install
-cp .env.example .env
-# Edit .env →
-#   REACT_APP_BACKEND_URL=http://localhost:8001
-yarn start
-```
-
-Visit **http://localhost:3000** → click **Find Groups**.
-
----
-
-## API Reference
-
-All routes are prefixed with `/api`.
-
-| Method | Path                            | Description                            |
-|--------|---------------------------------|----------------------------------------|
-| GET    | `/api/regions`                  | Returns supported regions              |
-| GET    | `/api/groups?region=All`        | List currently-open groups             |
-| GET    | `/api/groups/stats`             | Counts per region + scan info          |
-| POST   | `/api/groups/discover`          | Trigger background discovery scan      |
-| GET    | `/api/scan/status`              | Current scan progress                  |
-| POST   | `/api/groups/submit`            | User submits an invite link            |
-| POST   | `/api/groups/{id}/report`       | Report group (works / approval / invalid) |
-
-### Example — start a scan
-```bash
-curl -X POST http://localhost:8001/api/groups/discover \
-  -H "Content-Type: application/json" \
-  -d '{"regions":["Hyderabad","Delhi"],"category":"jobs","max_per_region":10}'
+pip install -r scripts/requirements.txt
+python scripts/discover.py --regions "Hyderabad,Delhi" --max-per-region 6
 ```
 
 ---
 
-## Deployment (Free Tier)
+## 5 · Customising
 
-You can host this entirely on free tiers:
-
-| Layer    | Recommended Free Host          |
-|----------|--------------------------------|
-| Frontend | Vercel · Netlify · Cloudflare Pages |
-| Backend  | Render · Railway · Fly.io (free trial) |
-| Database | MongoDB Atlas (M0 — free 512 MB) |
-
-### Steps after pushing to GitHub
-1. **MongoDB Atlas**: create free cluster → get connection string → set as `MONGO_URL`.
-2. **Backend (Render)**:
-   - New → Web Service → connect repo → root `backend/`
-   - Build: `pip install -r requirements.txt`
-   - Start: `uvicorn server:app --host 0.0.0.0 --port $PORT`
-   - Env vars: `MONGO_URL`, `DB_NAME`, `CORS_ORIGINS=https://<your-frontend>.vercel.app`
-3. **Frontend (Vercel)**:
-   - Import repo → root `frontend/`
-   - Build: `yarn build` · Output: `build`
-   - Env var: `REACT_APP_BACKEND_URL=https://<your-backend>.onrender.com`
+- **Add a region** → edit `REGIONS` in `scripts/lib.py` AND add a chip in `docs/index.html`.
+- **Change category** → pass `--category` to `discover.py`, or change `CATEGORY` in `lib.py`.
+- **Change auto-hide threshold** → edit `HIDE_THRESHOLD` in `scripts/apply_reports.py`.
+- **Style** → all CSS lives in `docs/styles.css`.
 
 ---
 
-## End-to-End Workflow
+## 6 · Ethical & legal notes
 
-1. **Build locally** → run `yarn start` + `uvicorn` and click *Find Groups*.
-2. **Initialise git** and push to GitHub:
-   ```bash
-   cd wa-jobs
-   git init
-   git add .
-   git commit -m "feat: initial commit"
-   git branch -M main
-   git remote add origin https://github.com/<you>/wa-jobs.git
-   git push -u origin main
-   ```
-3. **Create a free MongoDB Atlas cluster** and copy its connection string.
-4. **Deploy backend** on Render (see above) using the Atlas URL.
-5. **Deploy frontend** on Vercel with `REACT_APP_BACKEND_URL` pointed at the Render URL.
-6. **Visit the live site** and trigger a scan.
-7. (Optional) Add a GitHub Action to ping `/api/groups/discover` daily — keeps the directory fresh.
-
----
-
-## Legal & Ethical Notes
-- The bot only requests the **public invite-preview HTML** that WhatsApp serves to any browser — no
-  WhatsApp account is used and no joining is automated.
+- The bot only fetches the **public invite-preview** HTML that WhatsApp serves to any browser —
+  no WhatsApp account is used and no joining is automated.
 - WhatsApp now renders its join page in client-side JavaScript, which is why admin-approval status
-  must be crowd-verified by visitors.
-- Respect WhatsApp's [Terms of Service](https://www.whatsapp.com/legal/terms-of-service). Do not use
-  this project to spam, harvest data, or join groups against their rules.
-- Only links that are already publicly indexed on the open web are surfaced.
+  must be **crowd-verified** by visitors.
+- Only links already publicly indexed on the open web are surfaced.
+- Respect [WhatsApp's Terms of Service](https://www.whatsapp.com/legal/terms-of-service).
 
 ## License
 MIT

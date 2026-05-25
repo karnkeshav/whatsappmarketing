@@ -1,0 +1,8 @@
+{
+  "is_running": false,
+  "started_at": "2026-05-25T03:05:44.172902+00:00",
+  "finished_at": "2026-05-25T03:06:05.368101+00:00",
+  "found_count": 51,
+  "open_count": 5,
+  "message": "Scan finished — 5 new groups (of 51 candidates)"
+}
