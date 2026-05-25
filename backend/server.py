@@ -328,13 +328,13 @@ async def scan_status():
 
 @api.post("/groups/discover")
 async def discover(req: DiscoverReq, bg: BackgroundTasks):
-    state = await _get_scan_state()
-    if state.is_running:
-        return {"status": "already_running", "scan": state.model_dump()}
     regions_ = req.regions or REGIONS
     invalid = [r for r in regions_ if r not in REGIONS]
     if invalid:
         raise HTTPException(400, f"Unknown regions: {invalid}")
+    state = await _get_scan_state()
+    if state.is_running:
+        return {"status": "already_running", "scan": state.model_dump()}
     bg.add_task(_run_discovery, regions_, req.category, max(3, min(req.max_per_region, 30)))
     return {"status": "started", "regions": regions_, "category": req.category}
 
