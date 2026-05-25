@@ -20,7 +20,7 @@ export default function TickerRibbon() {
     >
       <Marquee gradient={false} speed={48} pauseOnHover>
         {items.concat(items).map((t, i) => (
-          <span key={i} className="font-display font-black tracking-tight uppercase text-sm">
+          <span key={`${t}-${i}`} className="font-display font-black tracking-tight uppercase text-sm">
             <span className="ticker-sep">+</span>{t}
           </span>
         ))}

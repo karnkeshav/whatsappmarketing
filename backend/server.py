@@ -114,9 +114,12 @@ async def _fetch(c: httpx.AsyncClient, url: str) -> Optional[str]:
 
 
 def _is_excluded(u: str) -> bool:
+    host = ""
     try:
         host = urlparse(u).netloc.lower()
     except Exception:
+        return True
+    if not host:
         return True
     return any(host == d or host.endswith("." + d) for d in EXCLUDED_DOMAINS) or "whatsapp.com" in host
 
@@ -200,42 +203,42 @@ async def _persist_group(group: WhatsAppGroup):
 
 
 # ---------- Discovery ----------
-async def _discover_for_region(c: httpx.AsyncClient, region: str, category: str, max_results: int) -> tuple[int, int]:
-    queries = [
+def _build_queries(region: str, category: str) -> list[str]:
+    return [
         f'"chat.whatsapp.com" {category} {region} group link',
         f'whatsapp group link {category} {region} 2025',
         f'{region} {category} whatsapp group join',
     ]
-    candidate_pages: list[str] = []
-    for q in queries:
-        urls = await startpage_search(c, q)
-        candidate_pages.extend(urls)
-        await asyncio.sleep(1.0)
-        if len(candidate_pages) >= 40:
-            break
-    # dedupe
-    seen, pages = set(), []
-    for u in candidate_pages:
-        if u not in seen:
-            seen.add(u)
-            pages.append(u)
 
-    # Crawl each result page, extracting any invite codes
-    discovered: dict[str, str] = {}  # code -> source_url
+
+async def _collect_candidate_pages(c: httpx.AsyncClient, region: str, category: str) -> list[str]:
+    candidates: list[str] = []
+    for q in _build_queries(region, category):
+        candidates.extend(await startpage_search(c, q))
+        await asyncio.sleep(1.0)
+        if len(candidates) >= 40:
+            break
+    return list(dict.fromkeys(candidates))  # dedupe, keep order
+
+
+async def _extract_codes_from_pages(c: httpx.AsyncClient, pages: list[str], cap: int) -> dict[str, str]:
+    discovered: dict[str, str] = {}
     for url in pages[:25]:
         html = await _fetch(c, url)
         if not html:
             continue
         for code in _extract_codes(html):
-            if code not in discovered:
-                discovered[code] = url
-        if len(discovered) >= max_results * 2:
+            discovered.setdefault(code, url)
+        if len(discovered) >= cap:
             break
         await asyncio.sleep(0.4)
+    return discovered
 
-    # Persist new ones
+
+async def _persist_discovered(items: list[tuple[str, str]], region: str, category: str,
+                              c: httpx.AsyncClient) -> int:
     open_count = 0
-    for code, src in list(discovered.items())[:max_results]:
+    for code, src in items:
         meta = await fetch_invite_meta(c, code)
         if not meta["valid"]:
             continue
@@ -250,10 +253,18 @@ async def _discover_for_region(c: httpx.AsyncClient, region: str, category: str,
             source_url=src,
             discovered_via="auto",
         )
-        added = await _persist_group(grp)
-        if added:
+        if await _persist_group(grp):
             open_count += 1
         await asyncio.sleep(0.2)
+    return open_count
+
+
+async def _discover_for_region(c: httpx.AsyncClient, region: str, category: str, max_results: int) -> tuple[int, int]:
+    pages = await _collect_candidate_pages(c, region, category)
+    discovered = await _extract_codes_from_pages(c, pages, cap=max_results * 2)
+    open_count = await _persist_discovered(
+        list(discovered.items())[:max_results], region, category, c
+    )
     return len(discovered), open_count
 
 

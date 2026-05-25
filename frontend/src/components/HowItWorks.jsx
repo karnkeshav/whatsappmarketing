@@ -43,8 +43,8 @@ export default function HowItWorks() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          {STEPS.map((s, i) => (
-            <div key={i} data-testid={`how-step-${i}`} className="brutal-card p-6 flex flex-col gap-4">
+          {STEPS.map((s) => (
+            <div key={s.title} data-testid={`how-step-${s.title}`} className="brutal-card p-6 flex flex-col gap-4">
               <s.icon size={28} weight="duotone" />
               <div className="font-display font-black text-xl uppercase">{s.title}</div>
               <p className="text-sm text-zinc-700 leading-relaxed">{s.body}</p>
