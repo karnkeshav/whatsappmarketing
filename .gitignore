@@ -23,3 +23,9 @@ frontend/.env
 /tests/
 /test_reports/
 test_result.md
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
