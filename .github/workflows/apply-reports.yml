@@ -2,7 +2,7 @@ name: Apply issue actions
 
 on:
   issues:
-    types: [opened, labeled, reopened]
+    types: [opened, labeled, reopened, edited]
   workflow_dispatch:
 
 permissions:
@@ -12,13 +12,40 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
+    # Allow either: a recognised label, a recognised title prefix, or manual dispatch.
+    # Title-prefix matching catches issues where GitHub dropped the URL `labels=` param
+    # because the label didn't exist in the repo yet — the workflow below auto-creates them.
     if: >
       github.event_name == 'workflow_dispatch' ||
       contains(github.event.issue.labels.*.name, 'submit') ||
       contains(github.event.issue.labels.*.name, 'report') ||
-      contains(github.event.issue.labels.*.name, 'scan-request')
+      contains(github.event.issue.labels.*.name, 'scan-request') ||
+      startsWith(github.event.issue.title, '[scan]') ||
+      startsWith(github.event.issue.title, '[submit]') ||
+      startsWith(github.event.issue.title, '[report:')
     steps:
       - uses: actions/checkout@v4
+
+      - name: Ensure required labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          create_label () {
+            local name=$1 color=$2 desc=$3
+            gh label create "$name" --repo "$GITHUB_REPOSITORY" \
+              --color "$color" --description "$desc" 2>/dev/null \
+              || gh label edit "$name" --repo "$GITHUB_REPOSITORY" \
+                  --color "$color" --description "$desc" 2>/dev/null || true
+          }
+          create_label submit          0E8A16 "User-submitted group link"
+          create_label scan-request    1D76DB "On-demand scan for a location"
+          create_label report          FBCA04 "Feedback report on a group"
+          create_label works           00E676 "Group worked without admin approval"
+          create_label approval        D93F0B "Group needs admin approval"
+          create_label readonly        FFD600 "Only admins can post in the group"
+          create_label invalid         B60205 "Invalid or expired invite link"
+          create_label processed       6E5494 "Bot already processed this issue"
+          create_label needs-attention E99695 "Bot could not process — please review"
 
       - uses: actions/setup-python@v5
         with:
