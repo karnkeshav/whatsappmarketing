@@ -1,0 +1,83 @@
+{
+  "theme_and_archetype": {
+    "theme": "Light",
+    "archetype": "4 (Swiss & High-Contrast)",
+    "description": "Authority, clarity, and function-first. A high-contrast utility directory prioritizing searchability, trust, and speed for job seekers. Zero decorative fluff."
+  },
+  "typography": {
+    "primary_font": "Cabinet Grotesk",
+    "secondary_font": "Satoshi",
+    "fallback_fonts": "sans-serif",
+    "headings": {
+      "h1": "text-5xl md:text-6xl+ tracking-tighter font-black uppercase",
+      "h2": "text-3xl md:text-4xl tracking-tight font-bold",
+      "h3": "text-xl md:text-2xl tracking-tight font-semibold"
+    },
+    "body": "text-base leading-relaxed text-zinc-800",
+    "labels": "text-xs tracking-[0.2em] uppercase font-bold text-zinc-500"
+  },
+  "color_palette": {
+    "background_primary": "#FAFAFA",
+    "background_secondary": "#FFFFFF",
+    "text_primary": "#0A0A0A",
+    "text_secondary": "#52525B",
+    "border_color": "#0A0A0A",
+    "border_light": "#E4E4E7",
+    "accent_primary": "#0047FF",
+    "accent_primary_hover": "#003DDB",
+    "whatsapp_neon": "#00E676",
+    "whatsapp_neon_hover": "#00C853",
+    "status_open": "#00E676",
+    "status_pending": "#FFD600",
+    "status_closed": "#EF4444"
+  },
+  "spacing_and_layout": {
+    "general": "Use generous Tailwind scales (p-4, p-8, p-12, p-16). Favor wide gaps (gap-8, gap-12) for macro layout, tight gaps (gap-4) for component internals. Padding inside bordered containers is mandatory.",
+    "grid_strategy": "The 'Control Room' grid for the directory results (grid-cols-1 md:grid-cols-2 lg:grid-cols-4) with tight gaps (gap-4 or gap-6). Every pixel utilized.",
+    "borders": "Expose the skeleton. Use 1px sharp borders (`border border-black`). No soft shadows for structure.",
+    "alignment": "Left-align dense content and forms. Optical alignment over geometric alignment."
+  },
+  "components_instructions": {
+    "HeroSection": "Left-aligned massive typography. Right side features a minimal Bento grid for Live Stats. Background subtle texture.",
+    "RegionFilters": "Filter-first navigation. Pill-shaped chips (`rounded-full`) with sharp 1px black borders. Active state: `bg-black text-white`. Inactive: `bg-white text-black hover:bg-zinc-100`.",
+    "WhatsAppGroupCard": "Cardless/Flat rectangular design. 1px solid black border. Top: Region badge + Status dot. Middle: Large Group Name + Member Count. Bottom: Full-width square 'Join' button using `whatsapp_neon`.",
+    "SubmitGroupForm": "Shadcn components heavily customized. Strip out Vercel-look (rounded corners, soft shadows). Use sharp edges (`rounded-none` or `rounded-sm`), solid 1px black borders.",
+    "LoadingState": "Avoid standard spinners. Use a 'Tracing Beam' or geometric skeleton loaders with sharp lines to fit the Swiss Tech vibe.",
+    "AboutSection": "Bento layout explaining the Bot validation process (Open vs Admin Approval).",
+    "StatsCounter": "Massive numbers (`text-5xl` or `text-6xl`) with thin uppercase labels."
+  },
+  "motion_and_interactions": {
+    "hover_states": "Interactive elements lift `-translate-y-1` with a sharp neo-brutalist drop shadow `shadow-[4px_4px_0px_0px_rgba(10,10,10,1)]`. Borders must darken or become fully black.",
+    "transitions": "Fast, snappy, mechanical. `transition-all duration-200 ease-in-out`.",
+    "marquee": "Use `react-fast-marquee` for an 'Editorial Ribbon' showing 'Over 10,000+ Active Jobs... Validated WhatsApp Groups' separated by geometric symbols (e.g., '+')."
+  },
+  "icons_and_assets": {
+    "icon_library": "@phosphor-icons/react",
+    "icon_style": "Bold or Duotone weights, high contrast and technical look."
+  },
+  "media_urls": {
+    "hero_abstract_bg": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/674159ea-08d8-4db8-927b-973e54ed8ddb/images/6b709bbd3b9120a8a93f8fbc83a514526095c3d14924ef53e8bb32d2473d912b.png",
+      "description": "Minimalist swiss design abstract geometric composition for subtle hero background.",
+      "usage": "Use with high transparency (opacity-10 to opacity-20) in the hero section to break the flat white background."
+    },
+    "network_grid_bg": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/674159ea-08d8-4db8-927b-973e54ed8ddb/images/580d58d2a9cc01964c07d068cae6c787818abecacadfb455340eddd36c0e436f.png",
+      "description": "Abstract clean line art representing networking and data nodes.",
+      "usage": "Use in the 'About / How it Works' section behind the bot validation explanation to visualize the checking process."
+    },
+    "hyderabad_architecture": {
+      "url": "https://images.unsplash.com/photo-1696941515998-d83f24967aca?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwxfHxoeWRlcmFiYWQlMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzc5Njc0NDY0fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Hyderabad architecture.",
+      "usage": "Optional: Use in Region cards if designing visual region selectors."
+    },
+    "delhi_architecture": {
+      "url": "https://images.unsplash.com/photo-1587474260584-136574528ed5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzV8MHwxfHNlYXJjaHwxfHxuZXclMjBkZWxoaSUyMGFyY2hpdGVjdHVyZXxlbnwwfHx8fDE3Nzk2NzQ0NjR8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Delhi architecture.",
+      "usage": "Optional: Use in Region cards if designing visual region selectors."
+    }
+  },
+  "testing_requirements": {
+    "data_testid_rules": "All interactive and key informational elements MUST include a data-testid attribute in kebab-case (e.g., 'find-groups-button', 'region-filter-hyderabad', 'join-group-link', 'submit-group-form')."
+  }
+}
