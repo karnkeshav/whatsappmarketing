@@ -19,14 +19,14 @@ async def collect_candidate_pages(c, region: str, category: str) -> list[str]:
     # Dynamic queries based on category to target large open groups
     if category.lower() == "societies":
         queries = [
-            '"chat.whatsapp.com" "{region}" apartment group link',
-            '"chat.whatsapp.com" "{region}" society group link',
-            '"chat.whatsapp.com" "{region}" gated community whatsapp group',
-            '"chat.whatsapp.com" "{region}" residential whatsapp group',
+            'whatsapp group link {region} apartment 2026',
+            'whatsapp group link {region} society 2026',
+            '{region} gated community whatsapp group join',
+            '{region} residential whatsapp group join',
         ]
     else:
         queries = [
-            '"chat.whatsapp.com" {category} {region} group link',
+            'chat.whatsapp.com {category} {region} group link',
             'whatsapp group link {category} {region} 2025',
             '{region} {category} whatsapp group join',
         ]
@@ -34,7 +34,7 @@ async def collect_candidate_pages(c, region: str, category: str) -> list[str]:
     for tmpl in queries:
         q = tmpl.format(region=region, category=category)
         out.extend(await startpage_search(c, q))
-        await asyncio.sleep(1.0)
+        await asyncio.sleep(2.5)
         if len(out) >= 40:
             break
     return list(dict.fromkeys(out))
