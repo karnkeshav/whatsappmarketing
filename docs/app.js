@@ -4,47 +4,50 @@
 
   /* ---------------- LOCATIONS (mirrors scripts/lib.py INDIAN_LOCATIONS) ---------------- */
   const INDIAN_LOCATIONS = {
-    "Andhra Pradesh": "Amaravati",
-    "Arunachal Pradesh": "Itanagar",
-    "Assam": "Dispur",
-    "Bihar": "Patna",
-    "Chhattisgarh": "Raipur",
-    "Goa": "Panaji",
-    "Gujarat": "Gandhinagar",
-    "Haryana": "Chandigarh",
-    "Himachal Pradesh": "Shimla",
-    "Jharkhand": "Ranchi",
-    "Karnataka": "Bengaluru",
-    "Kerala": "Thiruvananthapuram",
-    "Madhya Pradesh": "Bhopal",
-    "Maharashtra": "Mumbai",
-    "Manipur": "Imphal",
-    "Meghalaya": "Shillong",
-    "Mizoram": "Aizawl",
-    "Nagaland": "Kohima",
-    "Odisha": "Bhubaneswar",
-    "Punjab": "Chandigarh",
-    "Rajasthan": "Jaipur",
-    "Sikkim": "Gangtok",
-    "Tamil Nadu": "Chennai",
-    "Telangana": "Hyderabad",
-    "Tripura": "Agartala",
-    "Uttar Pradesh": "Lucknow",
-    "Uttarakhand": "Dehradun",
-    "West Bengal": "Kolkata",
-    "Andaman and Nicobar Islands": "Port Blair",
-    "Chandigarh": "Chandigarh",
-    "Dadra and Nagar Haveli and Daman and Diu": "Daman",
-    "Delhi": "New Delhi",
-    "Jammu and Kashmir": "Srinagar",
-    "Ladakh": "Leh",
-    "Lakshadweep": "Kavaratti",
-    "Puducherry": "Puducherry",
+    "Andhra Pradesh": ["Amaravati", "Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
+    "Arunachal Pradesh": ["Itanagar", "Tawang", "Changlang", "Ziro"],
+    "Assam": ["Dispur", "Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur"],
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga"],
+    "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Bhilai", "Bastar"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa"],
+    "Gujarat": ["Gandhinagar", "Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+    "Haryana": ["Chandigarh", "Gurugram", "Faridabad", "Panipat", "Ambala"],
+    "Himachal Pradesh": ["Shimla", "Dharamshala", "Manali", "Mandi", "Solan"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Hubballi-Dharwad", "Mangaluru", "Belagavi"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kannur"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad"],
+    "Manipur": ["Imphal", "Churachandpur", "Thoubal", "Ukhrul"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongpoh"],
+    "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Kolasib"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Wokha"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Sambalpur", "Puri"],
+    "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner"],
+    "Sikkim": ["Gangtok", "Namchi", "Geyzing", "Mangan"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Trichy", "Salem", "Tirunelveli"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
+    "Tripura": ["Agartala", "Dharmanagar", "Udaipur", "Kailasahar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Ghaziabad", "Varanasi", "Agra", "Prayagraj"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Haldwani", "Roorkee", "Nainital"],
+    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri", "Asansol", "Durgapur"],
+    "Andaman and Nicobar Islands": ["Port Blair", "Havelock Island", "Car Nicobar"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Silvassa", "Diu"],
+    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "West Delhi", "East Delhi"],
+    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Kathua"],
+    "Ladakh": ["Leh", "Kargil"],
+    "Lakshadweep": ["Kavaratti", "Minicoy", "Amini"],
+    "Puducherry": ["Puducherry", "Karaikal", "Mahe", "Yanam"],
   };
 
   const ALL_LOCATIONS = (() => {
     const set = new Set();
-    Object.entries(INDIAN_LOCATIONS).forEach(([s, c]) => { set.add(s); set.add(c); });
+    Object.entries(INDIAN_LOCATIONS).forEach(([state, districts]) => {
+      set.add(state);
+      districts.forEach(d => set.add(d));
+    });
     return Array.from(set).sort();
   })();
 
@@ -64,7 +67,9 @@
 
   /* ---------------- STATE ---------------- */
   const state = {
-    region: "all",
+    filterState: "all",
+    filterDistrict: "all",
+    filterCategory: "all",
     openChatOnly: false,
     groups: [],
     scan: null,
@@ -112,6 +117,7 @@
       console.error("load fail", e);
       state.groups = [];
     }
+    populateFilterDropdowns();
     render();
   }
 
@@ -128,16 +134,57 @@
     return { total: visible.length, openChat: open.length, readonly: readonly.length, auto: auto.length, locations: locations.size };
   }
 
-  function activeRegions() {
-    const seen = new Map();
-    state.groups.filter(isVisible).forEach(g => seen.set(g.region, (seen.get(g.region) || 0) + 1));
-    return Array.from(seen.entries()).sort((a, b) => b[1] - a[1]);
+  function getScannedLocations() {
+    const states = new Set();
+    const stateToDistricts = {};
+
+    state.groups.filter(isVisible).forEach(g => {
+      const reg = g.region;
+      if (INDIAN_LOCATIONS[reg]) {
+        states.add(reg);
+      } else {
+        for (const [s, dists] of Object.entries(INDIAN_LOCATIONS)) {
+          if (dists.includes(reg)) {
+            states.add(s);
+            if (!stateToDistricts[s]) stateToDistricts[s] = new Set();
+            stateToDistricts[s].add(reg);
+            break;
+          }
+        }
+      }
+    });
+
+    return {
+      states: Array.from(states).sort(),
+      stateToDistricts: Object.fromEntries(
+        Object.entries(stateToDistricts).map(([s, dSet]) => [s, Array.from(dSet).sort()])
+      )
+    };
   }
 
   function visibleGroups() {
     let list = state.groups.filter(isVisible);
-    if (state.region !== "all") list = list.filter(g => g.region === state.region);
-    if (state.openChatOnly) list = list.filter(g => chatModeOf(g) === "open");
+
+    // Category Filter
+    if (state.filterCategory !== "all") {
+      list = list.filter(g => (g.category || "jobs").toLowerCase() === state.filterCategory);
+    }
+
+    // State + District Filter
+    if (state.filterState !== "all") {
+      if (state.filterDistrict !== "all") {
+        list = list.filter(g => g.region === state.filterDistrict);
+      } else {
+        const allowedDists = INDIAN_LOCATIONS[state.filterState] || [];
+        list = list.filter(g => g.region === state.filterState || allowedDists.includes(g.region));
+      }
+    }
+
+    // Open Chat Only Filter
+    if (state.openChatOnly) {
+      list = list.filter(g => chatModeOf(g) === "open");
+    }
+
     return list;
   }
 
@@ -158,15 +205,69 @@
 
   function renderFilters() {
     const wrap = $("#region-filters");
-    const regions = activeRegions();
-    const chips = [`<button class="chip" data-region="all" data-active="${state.region === "all"}">All Regions <span class="chip-count">${regions.reduce((a,[,n])=>a+n,0)}</span></button>`];
-    regions.forEach(([r, n]) => {
-      chips.push(`<button class="chip" data-region="${esc(r)}" data-active="${state.region === r}"><span class="dot"></span>${esc(r)} <span class="chip-count">${n}</span></button>`);
-    });
-    wrap.innerHTML = chips.join("");
-    wrap.querySelectorAll(".chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.region = btn.dataset.region;
+    if (!wrap) return;
+
+    const parts = [];
+    if (state.filterCategory !== "all") {
+      parts.push(`<span class="chip" data-clear="category">Category: ${esc(state.filterCategory)} &times;</span>`);
+    }
+    if (state.filterState !== "all") {
+      parts.push(`<span class="chip" data-clear="state">State: ${esc(state.filterState)} &times;</span>`);
+    }
+    if (state.filterDistrict !== "all") {
+      parts.push(`<span class="chip" data-clear="district">District: ${esc(state.filterDistrict)} &times;</span>`);
+    }
+    if (state.openChatOnly) {
+      parts.push(`<span class="chip" data-clear="open-chat">Open Chat Only &times;</span>`);
+    }
+
+    if (parts.length === 0) {
+      wrap.innerHTML = `<span class="label-eyebrow" style="padding: 6px 0;">All groups displayed (open panel to filter)</span>`;
+      return;
+    }
+
+    wrap.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span class="label-eyebrow">Active filters:</span>
+        ${parts.join("")}
+        <button class="chip" data-clear="all" style="background: var(--ink); color: #fff;">Clear All</button>
+      </div>`;
+
+    wrap.querySelectorAll("[data-clear]").forEach(el => {
+      el.addEventListener("click", () => {
+        const action = el.dataset.clear;
+        if (action === "category") {
+          state.filterCategory = "all";
+          if ($("#filter-category-select")) $("#filter-category-select").value = "all";
+        } else if (action === "state") {
+          state.filterState = "all";
+          state.filterDistrict = "all";
+          if ($("#filter-state-select")) $("#filter-state-select").value = "all";
+          if ($("#filter-district-select")) {
+            $("#filter-district-select").value = "all";
+            $("#filter-district-select").disabled = true;
+          }
+        } else if (action === "district") {
+          state.filterDistrict = "all";
+          if ($("#filter-district-select")) $("#filter-district-select").value = "all";
+        } else if (action === "open-chat") {
+          state.openChatOnly = false;
+          if ($("#open-chat-only")) $("#open-chat-only").checked = false;
+          if ($("#open-chat-only-drawer")) $("#open-chat-only-drawer").checked = false;
+        } else if (action === "all") {
+          state.filterCategory = "all";
+          state.filterState = "all";
+          state.filterDistrict = "all";
+          state.openChatOnly = false;
+          if ($("#filter-category-select")) $("#filter-category-select").value = "all";
+          if ($("#filter-state-select")) $("#filter-state-select").value = "all";
+          if ($("#filter-district-select")) {
+            $("#filter-district-select").value = "all";
+            $("#filter-district-select").disabled = true;
+          }
+          if ($("#open-chat-only")) $("#open-chat-only").checked = false;
+          if ($("#open-chat-only-drawer")) $("#open-chat-only-drawer").checked = false;
+        }
         renderFilters();
         renderGrid();
       });
@@ -194,13 +295,18 @@
     const statusHtml = isReadOnly
       ? `<span class="status readonly"><span class="dot"></span>Read-only · DM admin</span>`
       : `<span class="status"><span class="dot"></span>Open chat</span>`;
+    const category = (g.category || "jobs").toLowerCase();
+    const catBadge = `<span class="status-tag tag-${category}">${esc(category)}</span>`;
     const ctaCls = isReadOnly ? "card-cta card-cta-readonly" : "card-cta";
     const ctaText = isReadOnly ? "Open · contact admin →" : "Open in WhatsApp →";
     return `
     <article class="${cardCls}" data-id="${esc(g.id)}">
       <div class="card-head">
         <span class="label-eyebrow">${esc(g.region)}</span>
-        ${statusHtml}
+        <div style="display: flex; align-items: center; gap: 8px;">
+          ${catBadge}
+          ${statusHtml}
+        </div>
       </div>
       <div class="card-body">
         <h3 class="card-name">${esc(g.name || "WhatsApp Group")}</h3>
@@ -229,23 +335,90 @@
     <div class="empty">
       <div class="label-eyebrow">No groups in this filter</div>
       <h3>The directory is empty for this view.</h3>
-      <p>Pick a different region, or trigger a scan from the Locations section above.</p>
-      <a class="btn btn-neon" href="#locations">Browse Locations</a>
+      <p>Try clearing your filters, or run a new scan from the Control Panel.</p>
+      <button class="btn btn-neon" onclick="document.getElementById('sidebar-drawer').classList.add('open'); document.getElementById('drawer-overlay').classList.add('open');">Open Control Panel</button>
     </div>`;
   }
 
-  /* ---------------- LOCATIONS SECTION ---------------- */
-  function renderLocationsGrid() {
-    const grid = $("#locations-grid");
-    const items = Object.entries(INDIAN_LOCATIONS).sort((a, b) => a[0].localeCompare(b[0]));
-    grid.innerHTML = items.map(([s, c]) => `
-      <div class="loc-row">
-        <button class="chip chip-state" data-scan="${esc(s)}" title="Scan ${esc(s)} (state)">${esc(s)}</button>
-        <button class="chip chip-capital" data-scan="${esc(c)}" title="Scan ${esc(c)} (capital)">${esc(c)}</button>
-      </div>
-    `).join("");
-    grid.querySelectorAll("button[data-scan]").forEach(btn => {
-      btn.addEventListener("click", () => openScanIssue(btn.dataset.scan));
+  /* ---------------- LOCATIONS & CONTROL PANEL ---------------- */
+  function populateScanDropdowns() {
+    const stateSelect = $("#scan-state-select");
+    const distSelect = $("#scan-district-select");
+    if (!stateSelect || !distSelect) return;
+
+    const states = Object.keys(INDIAN_LOCATIONS).sort();
+    stateSelect.innerHTML = `<option value="">Choose State</option>` + 
+      states.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+
+    stateSelect.addEventListener("change", () => {
+      const selectedState = stateSelect.value;
+      if (!selectedState) {
+        distSelect.innerHTML = `<option value="">Choose State first</option>`;
+        distSelect.disabled = true;
+        return;
+      }
+      const dists = INDIAN_LOCATIONS[selectedState] || [];
+      distSelect.innerHTML = dists.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join("");
+      distSelect.disabled = false;
+    });
+  }
+
+  function populateFilterDropdowns() {
+    const stateSelect = $("#filter-state-select");
+    const distSelect = $("#filter-district-select");
+    if (!stateSelect || !distSelect) return;
+
+    const { states, stateToDistricts } = getScannedLocations();
+
+    const currentSelectedState = state.filterState;
+    const currentSelectedDist = state.filterDistrict;
+
+    stateSelect.innerHTML = `<option value="all">All States</option>` + 
+      states.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("");
+
+    if (states.includes(currentSelectedState)) {
+      stateSelect.value = currentSelectedState;
+    } else {
+      state.filterState = "all";
+      stateSelect.value = "all";
+    }
+
+    const updateDistricts = () => {
+      const selectedState = stateSelect.value;
+      state.filterState = selectedState;
+
+      if (selectedState === "all") {
+        distSelect.innerHTML = `<option value="all">All Districts</option>`;
+        distSelect.disabled = true;
+        state.filterDistrict = "all";
+      } else {
+        const dists = stateToDistricts[selectedState] || [];
+        distSelect.innerHTML = `<option value="all">All Districts</option>` + 
+          dists.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join("");
+        distSelect.disabled = false;
+
+        if (dists.includes(currentSelectedDist)) {
+          distSelect.value = currentSelectedDist;
+          state.filterDistrict = currentSelectedDist;
+        } else {
+          distSelect.value = "all";
+          state.filterDistrict = "all";
+        }
+      }
+    };
+
+    updateDistricts();
+
+    stateSelect.addEventListener("change", () => {
+      updateDistricts();
+      renderFilters();
+      renderGrid();
+    });
+
+    distSelect.addEventListener("change", () => {
+      state.filterDistrict = distSelect.value;
+      renderFilters();
+      renderGrid();
     });
   }
 
@@ -253,18 +426,24 @@
     $("#locations-datalist").innerHTML = ALL_LOCATIONS.map(x => `<option value="${esc(x)}">`).join("");
   }
 
-  function openScanIssue(region) {
+  function openScanIssue(stateVal, distVal, catVal) {
+    if (!stateVal) {
+      toast("Please select a State to scan", true);
+      return;
+    }
+    const region = distVal || stateVal;
     const title = `[scan] ${region}`;
     const body =
 `<!-- Auto-generated by the WA/Jobs site. Do not edit the lines below. -->
 - kind: scan-request
 - region: ${region}
+- category: ${catVal}
 - max_per_region: 12
 
 (Optional notes…)`;
     const url = `${REPO_URL}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=${encodeURIComponent("scan-request")}`;
     window.open(url, "_blank", "noopener");
-    toast(`Opening GitHub issue to scan ${region}`);
+    toast(`Opening GitHub issue to scan ${region} for ${catVal}`);
   }
 
   /* ---------------- INTERACTIONS ---------------- */
@@ -295,8 +474,16 @@
   function bindOpenChatToggle() {
     $("#open-chat-only").addEventListener("change", e => {
       state.openChatOnly = e.target.checked;
+      if ($("#open-chat-only-drawer")) $("#open-chat-only-drawer").checked = e.target.checked;
       renderGrid();
     });
+    if ($("#open-chat-only-drawer")) {
+      $("#open-chat-only-drawer").addEventListener("change", e => {
+        state.openChatOnly = e.target.checked;
+        $("#open-chat-only").checked = e.target.checked;
+        renderGrid();
+      });
+    }
   }
 
   function bindSubmit() {
@@ -304,6 +491,7 @@
       e.preventDefault();
       const link = $("#submit-link").value.trim();
       const region = $("#submit-region-input").value.trim();
+      const category = $("#submit-category-select").value;
       if (!/^https?:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]{18,30}/.test(link)) {
         toast("Please paste a valid chat.whatsapp.com link", true);
         return;
@@ -312,11 +500,12 @@
         toast("Region must be an Indian state or capital", true);
         return;
       }
-      const title = `[submit] ${region} — new group`;
+      const title = `[submit] ${region} — new ${category} group`;
       const body =
 `<!-- Auto-generated by the WA/Jobs submit form. Do not edit the lines below. -->
 - kind: submit
 - region: ${region}
+- category: ${category}
 - link: ${link}
 
 (Add any extra notes — optional)`;
@@ -332,13 +521,55 @@
     $("#repo-link").href = REPO_URL;
   }
 
+  function bindDrawer() {
+    const drawer = $("#sidebar-drawer");
+    const overlay = $("#drawer-overlay");
+    const openBtn = $("#open-drawer-btn");
+    const navOpenBtn = $("#nav-drawer-toggle");
+    const closeBtn = $("#close-drawer-btn");
+
+    function openDrawer() {
+      drawer.classList.add("open");
+      overlay.classList.add("open");
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      overlay.classList.remove("open");
+    }
+
+    if (openBtn) openBtn.addEventListener("click", openDrawer);
+    if (navOpenBtn) navOpenBtn.addEventListener("click", openDrawer);
+    if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+    if (overlay) overlay.addEventListener("click", closeDrawer);
+  }
+
   function init() {
     $("#year").textContent = new Date().getFullYear();
-    renderLocationsGrid();
     fillDatalist();
     bindOpenChatToggle();
     bindSubmit();
     bindRefresh();
+    bindDrawer();
+    populateScanDropdowns();
+
+    if ($("#filter-category-select")) {
+      $("#filter-category-select").addEventListener("change", e => {
+        state.filterCategory = e.target.value;
+        renderFilters();
+        renderGrid();
+      });
+    }
+
+    if ($("#run-scan-btn")) {
+      $("#run-scan-btn").addEventListener("click", () => {
+        const stateVal = $("#scan-state-select").value;
+        const distVal = $("#scan-district-select").value;
+        const catVal = $("#scan-category-select").value;
+        openScanIssue(stateVal, distVal, catVal);
+      });
+    }
+
     loadData();
   }
 

@@ -22,51 +22,52 @@ DATA_DIR = ROOT / "docs" / "data"
 GROUPS_FILE = DATA_DIR / "groups.json"
 STATE_FILE = DATA_DIR / "scan_state.json"
 
-# All Indian states + UTs and their capitals.
-# Click a STATE name or CAPITAL name → it becomes a valid scan target.
+# Mapped State -> Major Districts (including capital/major cities)
 INDIAN_LOCATIONS = {
-    # 28 states
-    "Andhra Pradesh": "Amaravati",
-    "Arunachal Pradesh": "Itanagar",
-    "Assam": "Dispur",
-    "Bihar": "Patna",
-    "Chhattisgarh": "Raipur",
-    "Goa": "Panaji",
-    "Gujarat": "Gandhinagar",
-    "Haryana": "Chandigarh",
-    "Himachal Pradesh": "Shimla",
-    "Jharkhand": "Ranchi",
-    "Karnataka": "Bengaluru",
-    "Kerala": "Thiruvananthapuram",
-    "Madhya Pradesh": "Bhopal",
-    "Maharashtra": "Mumbai",
-    "Manipur": "Imphal",
-    "Meghalaya": "Shillong",
-    "Mizoram": "Aizawl",
-    "Nagaland": "Kohima",
-    "Odisha": "Bhubaneswar",
-    "Punjab": "Chandigarh",
-    "Rajasthan": "Jaipur",
-    "Sikkim": "Gangtok",
-    "Tamil Nadu": "Chennai",
-    "Telangana": "Hyderabad",
-    "Tripura": "Agartala",
-    "Uttar Pradesh": "Lucknow",
-    "Uttarakhand": "Dehradun",
-    "West Bengal": "Kolkata",
+    "Andhra Pradesh": ["Amaravati", "Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
+    "Arunachal Pradesh": ["Itanagar", "Tawang", "Changlang", "Ziro"],
+    "Assam": ["Dispur", "Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur"],
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga"],
+    "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Bhilai", "Bastar"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa"],
+    "Gujarat": ["Gandhinagar", "Ahmedabad", "Surat", "Vadodara", "Rajkot"],
+    "Haryana": ["Chandigarh", "Gurugram", "Faridabad", "Panipat", "Ambala"],
+    "Himachal Pradesh": ["Shimla", "Dharamshala", "Manali", "Mandi", "Solan"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Hubballi-Dharwad", "Mangaluru", "Belagavi"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kannur"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad"],
+    "Manipur": ["Imphal", "Churachandpur", "Thoubal", "Ukhrul"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongpoh"],
+    "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Kolasib"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Wokha"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Sambalpur", "Puri"],
+    "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner"],
+    "Sikkim": ["Gangtok", "Namchi", "Geyzing", "Mangan"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Trichy", "Salem", "Tirunelveli"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
+    "Tripura": ["Agartala", "Dharmanagar", "Udaipur", "Kailasahar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Noida", "Ghaziabad", "Varanasi", "Agra", "Prayagraj"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Haldwani", "Roorkee", "Nainital"],
+    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri", "Asansol", "Durgapur"],
     # 8 union territories
-    "Andaman and Nicobar Islands": "Port Blair",
-    "Chandigarh": "Chandigarh",
-    "Dadra and Nagar Haveli and Daman and Diu": "Daman",
-    "Delhi": "New Delhi",
-    "Jammu and Kashmir": "Srinagar",
-    "Ladakh": "Leh",
-    "Lakshadweep": "Kavaratti",
-    "Puducherry": "Puducherry",
+    "Andaman and Nicobar Islands": ["Port Blair", "Havelock Island", "Car Nicobar"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Silvassa", "Diu"],
+    "Delhi": ["New Delhi", "North Delhi", "South Delhi", "West Delhi", "East Delhi"],
+    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Kathua"],
+    "Ladakh": ["Leh", "Kargil"],
+    "Lakshadweep": ["Kavaratti", "Minicoy", "Amini"],
+    "Puducherry": ["Puducherry", "Karaikal", "Mahe", "Yanam"],
 }
 
-# Every accepted region name (states + capitals, case-insensitive matching)
-VALID_LOCATIONS = sorted(set(INDIAN_LOCATIONS.keys()) | set(INDIAN_LOCATIONS.values()))
+# Every accepted region name (states + all districts, case-insensitive matching)
+VALID_LOCATIONS = sorted(
+    set(INDIAN_LOCATIONS.keys())
+    | {dist for dists in INDIAN_LOCATIONS.values() for dist in dists}
+)
 VALID_LOWER = {x.lower(): x for x in VALID_LOCATIONS}
 
 # Legacy 4 default regions (kept for the cron-default discover run)
@@ -203,11 +204,37 @@ async def fetch_invite_meta(c: httpx.AsyncClient, code: str) -> dict:
     soup = BeautifulSoup(html, "lxml")
     og_t = soup.find("meta", property="og:title")
     og_d = soup.find("meta", property="og:description")
+    
+    title_val = og_t["content"].strip() if og_t and og_t.get("content") else ""
+    desc_val = og_d["content"].strip() if og_d and og_d.get("content") else ""
+    
+    is_valid = True
+    # If the title is empty or exactly generic, it indicates an invalid or reset link
+    if not title_val or title_val == "WhatsApp Group Invite" or title_val == "WhatsApp Group":
+        is_valid = False
+        
+    # Check for gating or admin approval keywords in the HTML page body or scripts
+    gated_indicators = [
+        "membershipApprovalMode",
+        "join_approval_mode",
+        "approval_required",
+        "Request to join",
+        "An admin must approve",
+        "admin-approval",
+        "approvalrequired",
+    ]
+    html_lower = html.lower()
+    is_gated = any(ind.lower() in html_lower for ind in gated_indicators)
+    
+    # If gated, treat as invalid so it doesn't get merged
+    if is_gated:
+        is_valid = False
+
     return {
-        "name": og_t["content"].strip() if og_t and og_t.get("content") else None,
-        "description": og_d["content"].strip() if og_d and og_d.get("content") else None,
+        "name": title_val if title_val else None,
+        "description": desc_val if desc_val else None,
         "url": url,
-        "valid": True,
+        "valid": is_valid,
     }
 
 
@@ -216,6 +243,7 @@ def make_group(
     *, name: str, invite_link: str, invite_code: str, region: str,
     description: Optional[str] = None, source_url: Optional[str] = None,
     discovered_via: str = "auto",
+    category: str = "jobs",
 ) -> dict:
     n = now_iso()
     return {
@@ -224,7 +252,7 @@ def make_group(
         "invite_link": invite_link,
         "invite_code": invite_code,
         "region": region,
-        "category": CATEGORY,
+        "category": category,
         # status: "open" = visible, "hidden" = hidden by 2+ approval reports, "invalid" = dead link
         "status": "open",
         # NEW: messaging mode. "open" (anyone can post) or "readonly" (only admins post).

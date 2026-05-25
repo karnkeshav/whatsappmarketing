@@ -14,16 +14,24 @@ from lib import (
     upsert_group,
 )
 
-QUERIES = [
-    '"chat.whatsapp.com" {category} {region} group link',
-    'whatsapp group link {category} {region} 2025',
-    '{region} {category} whatsapp group join',
-]
-
-
 async def collect_candidate_pages(c, region: str, category: str) -> list[str]:
     out: list[str] = []
-    for tmpl in QUERIES:
+    # Dynamic queries based on category to target large open groups
+    if category.lower() == "societies":
+        queries = [
+            '"chat.whatsapp.com" "{region}" apartment group link',
+            '"chat.whatsapp.com" "{region}" society group link',
+            '"chat.whatsapp.com" "{region}" gated community whatsapp group',
+            '"chat.whatsapp.com" "{region}" residential whatsapp group',
+        ]
+    else:
+        queries = [
+            '"chat.whatsapp.com" {category} {region} group link',
+            'whatsapp group link {category} {region} 2025',
+            '{region} {category} whatsapp group join',
+        ]
+
+    for tmpl in queries:
         q = tmpl.format(region=region, category=category)
         out.extend(await startpage_search(c, q))
         await asyncio.sleep(1.0)
@@ -60,6 +68,7 @@ async def persist_discovered(c, codes, region: str, category: str, groups: list[
             description=meta["description"],
             source_url=src,
             discovered_via="auto",
+            category=category,
         )
         if upsert_group(groups, grp):
             added += 1
