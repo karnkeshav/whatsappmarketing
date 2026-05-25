@@ -18,3 +18,9 @@ frontend/.env
 .vscode/
 .idea/
 *.log
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
