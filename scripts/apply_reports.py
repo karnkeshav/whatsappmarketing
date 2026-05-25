@@ -122,6 +122,9 @@ async def handle_submit(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
     region = normalise_region(kv.get("region", ""))
     if not region:
         return False, "Region must be an Indian state or capital."
+    category = kv.get("category", "jobs").strip().lower()
+    if category not in {"jobs", "societies"}:
+        category = "jobs"
     code = extract_invite_code(link)
     if not code:
         return False, f"Not a valid chat.whatsapp.com invite link: {link!r}"
@@ -142,6 +145,7 @@ async def handle_submit(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
         description=meta["description"],
         source_url=issue.get("html_url"),
         discovered_via="user",
+        category=category,
     )
     upsert_group(groups, grp)
     return True, f"Added **{grp['name']}** ({region}) to the directory."
@@ -195,11 +199,14 @@ async def handle_scan_request(c, issue: dict, groups: list[dict]) -> tuple[bool,
     region = normalise_region(region_raw)
     if not region:
         return False, f"Region {region_raw!r} is not a recognised Indian state or capital."
+    category = kv.get("category", "jobs").strip().lower()
+    if category not in {"jobs", "societies"}:
+        category = "jobs"
     try:
         max_per = max(3, min(int(kv.get("max_per_region", "12") or 12), 30))
     except ValueError:
         max_per = 12
-    found, added = await discover_mod.discover_region(c, region, CATEGORY, max_per, groups)
+    found, added = await discover_mod.discover_region(c, region, category, max_per, groups)
     return True, f"Scanned **{region}** — {added} new groups added (of {found} candidates)."
 
 
