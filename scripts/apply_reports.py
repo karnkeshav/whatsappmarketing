@@ -14,9 +14,9 @@ from typing import Optional
 import httpx
 
 from lib import (
-    CATEGORY, extract_invite_code, fetch_invite_meta, find_group, http_client,
-    load_groups, make_group, normalise_region, now_iso, save_groups,
-    upsert_group,
+    DEFAULT_CATEGORY, extract_invite_code, fetch_invite_meta, find_group,
+    http_client, load_groups, make_group, normalise_category, normalise_region,
+    now_iso, save_groups, upsert_group,
 )
 import discover as discover_mod
 
@@ -120,8 +120,9 @@ async def handle_submit(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
     kv = parse_issue_body(issue.get("body") or "")
     link = kv.get("link", "")
     region = normalise_region(kv.get("region", ""))
+    category = normalise_category(kv.get("category", DEFAULT_CATEGORY))
     if not region:
-        return False, "Region must be an Indian state or capital."
+        return False, "Region must be an Indian state, capital or district."
     code = extract_invite_code(link)
     if not code:
         return False, f"Not a valid chat.whatsapp.com invite link: {link!r}"
@@ -139,12 +140,13 @@ async def handle_submit(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
         invite_link=meta["url"],
         invite_code=code,
         region=region,
+        category=category,
         description=meta["description"],
         source_url=issue.get("html_url"),
         discovered_via="user",
     )
     upsert_group(groups, grp)
-    return True, f"Added **{grp['name']}** ({region}) to the directory."
+    return True, f"Added **{grp['name']}** ({region} · {category}) to the directory."
 
 
 async def handle_report(issue: dict, groups: list[dict]) -> tuple[bool, str]:
@@ -184,9 +186,8 @@ async def handle_report(issue: dict, groups: list[dict]) -> tuple[bool, str]:
 
 
 async def handle_scan_request(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
-    # Region can come from the structured kv block, OR fall back to the title `[scan] <name>`.
     kv = parse_issue_body(issue.get("body") or "")
-    region_raw = kv.get("region") or ""
+    region_raw = kv.get("region") or kv.get("district") or ""
     if not region_raw:
         title = issue.get("title") or ""
         m = re.match(r"\[scan\]\s*(.+)", title, re.IGNORECASE)
@@ -194,13 +195,17 @@ async def handle_scan_request(c, issue: dict, groups: list[dict]) -> tuple[bool,
             region_raw = m.group(1).strip()
     region = normalise_region(region_raw)
     if not region:
-        return False, f"Region {region_raw!r} is not a recognised Indian state or capital."
+        return False, f"Region {region_raw!r} is not a recognised Indian state, capital or district."
+    category = normalise_category(kv.get("category", DEFAULT_CATEGORY))
     try:
         max_per = max(3, min(int(kv.get("max_per_region", "12") or 12), 30))
     except ValueError:
         max_per = 12
-    found, added = await discover_mod.discover_region(c, region, CATEGORY, max_per, groups)
-    return True, f"Scanned **{region}** — {added} new groups added (of {found} candidates)."
+    found, added, skipped = await discover_mod.discover_region(c, region, category, max_per, groups)
+    return True, (
+        f"Scanned **{region}** ({category}) — {added} new groups added, "
+        f"{skipped} admin-restricted skipped (of {found} candidates)."
+    )
 
 
 # ---------- Main ----------

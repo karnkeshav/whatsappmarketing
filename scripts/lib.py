@@ -1,8 +1,9 @@
 """
 Shared helpers for the WA/Jobs GitHub-Action bot.
-- search the public web via Startpage (no API key)
-- crawl result pages for chat.whatsapp.com invite codes
-- read/write the JSON "database" inside docs/data/
+- INDIAN_LOCATIONS = state → capital
+- INDIAN_DISTRICTS = state → list of major districts/cities
+- CATEGORIES       = available categories (jobs, societies, …)
+- search Startpage / crawl pages / read & write docs/data/groups.json
 """
 from __future__ import annotations
 import asyncio
@@ -22,10 +23,8 @@ DATA_DIR = ROOT / "docs" / "data"
 GROUPS_FILE = DATA_DIR / "groups.json"
 STATE_FILE = DATA_DIR / "scan_state.json"
 
-# All Indian states + UTs and their capitals.
-# Click a STATE name or CAPITAL name → it becomes a valid scan target.
+# ---------- LOCATIONS ----------
 INDIAN_LOCATIONS = {
-    # 28 states
     "Andhra Pradesh": "Amaravati",
     "Arunachal Pradesh": "Itanagar",
     "Assam": "Dispur",
@@ -54,7 +53,6 @@ INDIAN_LOCATIONS = {
     "Uttar Pradesh": "Lucknow",
     "Uttarakhand": "Dehradun",
     "West Bengal": "Kolkata",
-    # 8 union territories
     "Andaman and Nicobar Islands": "Port Blair",
     "Chandigarh": "Chandigarh",
     "Dadra and Nagar Haveli and Daman and Diu": "Daman",
@@ -65,13 +63,87 @@ INDIAN_LOCATIONS = {
     "Puducherry": "Puducherry",
 }
 
-# Every accepted region name (states + capitals, case-insensitive matching)
-VALID_LOCATIONS = sorted(set(INDIAN_LOCATIONS.keys()) | set(INDIAN_LOCATIONS.values()))
+# Major districts/cities per state — kept short & well-known for searchability.
+INDIAN_DISTRICTS: dict[str, list[str]] = {
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati", "Nellore", "Kurnool", "Kakinada", "Rajahmundry"],
+    "Arunachal Pradesh": ["Itanagar", "Tawang", "Pasighat", "Naharlagun"],
+    "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur", "Nagaon"],
+    "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Darbhanga", "Purnia", "Begusarai", "Ara"],
+    "Chhattisgarh": ["Raipur", "Bilaspur", "Bhilai", "Korba", "Durg", "Rajnandgaon", "Jagdalpur"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa", "Ponda"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Anand"],
+    "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Hisar", "Karnal", "Rohtak", "Sonipat"],
+    "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Solan", "Mandi", "Kullu", "Bilaspur"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Hazaribagh", "Deoghar", "Giridih"],
+    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubli", "Belagavi", "Davangere", "Tumakuru", "Shivamogga"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Alappuzha", "Palakkad", "Kannur"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Thane", "Solapur", "Kolhapur", "Navi Mumbai"],
+    "Manipur": ["Imphal", "Bishnupur", "Churachandpur", "Thoubal"],
+    "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongstoin"],
+    "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip"],
+    "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Mon"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Berhampur", "Sambalpur", "Puri"],
+    "Punjab": ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer", "Bikaner", "Alwar"],
+    "Sikkim": ["Gangtok", "Namchi", "Mangan", "Geyzing"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Erode", "Vellore"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam", "Mahbubnagar", "Secunderabad"],
+    "Tripura": ["Agartala", "Udaipur", "Dharmanagar", "Kailashahar"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra", "Meerut", "Ghaziabad", "Noida", "Allahabad", "Bareilly"],
+    "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rishikesh", "Nainital"],
+    "West Bengal": ["Kolkata", "Howrah", "Siliguri", "Durgapur", "Asansol", "Darjeeling"],
+    "Andaman and Nicobar Islands": ["Port Blair", "Diglipur"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Daman", "Diu", "Silvassa"],
+    "Delhi": ["New Delhi", "Dwarka", "Rohini", "Saket", "Connaught Place"],
+    "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla"],
+    "Ladakh": ["Leh", "Kargil"],
+    "Lakshadweep": ["Kavaratti"],
+    "Puducherry": ["Puducherry", "Karaikal"],
+}
+
+# Categories: keyword used for search + label shown to user
+CATEGORIES = [
+    {"value": "jobs",        "label": "Jobs",         "query": "jobs"},
+    {"value": "societies",   "label": "Societies",    "query": "society apartment residents"},
+    {"value": "education",   "label": "Education",    "query": "education students study"},
+    {"value": "real-estate", "label": "Real Estate",  "query": "real estate property"},
+    {"value": "business",    "label": "Business",     "query": "business networking trade"},
+    {"value": "news",        "label": "News",         "query": "news updates"},
+]
+CATEGORY_BY_VALUE = {c["value"]: c for c in CATEGORIES}
+DEFAULT_CATEGORY = "jobs"
+
+# Valid scan targets — states + capitals + every district (case-insensitive)
+def _all_valid_targets() -> set[str]:
+    s = set(INDIAN_LOCATIONS.keys()) | set(INDIAN_LOCATIONS.values())
+    for districts in INDIAN_DISTRICTS.values():
+        s.update(districts)
+    return s
+
+VALID_LOCATIONS = sorted(_all_valid_targets())
 VALID_LOWER = {x.lower(): x for x in VALID_LOCATIONS}
 
-# Legacy 4 default regions (kept for the cron-default discover run)
+# Reverse lookup: district → state. (If the same name appears in 2 states we keep the first.)
+DISTRICT_TO_STATE: dict[str, str] = {}
+for _state, _ds in INDIAN_DISTRICTS.items():
+    for _d in _ds:
+        DISTRICT_TO_STATE.setdefault(_d, _state)
+
 DEFAULT_REGIONS = ["Hyderabad", "Bihar", "Delhi", "Jharkhand"]
-CATEGORY = "jobs"
+
+# Heuristic skip list — if a group name contains any of these, we don't add it.
+ADMIN_HEURISTIC_KEYWORDS = [
+    "admin approval", "approval required", "approval-required",
+    "private group", "members only", "members-only",
+    "official only", "official-only",
+    "by invitation", "invite only", "invitation only",
+    "verified members", "internal only", "internal use",
+    "closed group", "closed-group", "restricted",
+    "broadcast only", "announcement only", "announcements only",
+    "read only", "read-only", "channel only",
+]
 
 INVITE_REGEX = re.compile(
     r"https?://chat\.whatsapp\.com/(?:invite/)?([A-Za-z0-9_-]{18,30})", re.IGNORECASE
@@ -96,10 +168,25 @@ EXCLUDED_DOMAINS = {
 
 # ---------- region normalisation ----------
 def normalise_region(name: str) -> Optional[str]:
-    """Return the canonical-case name if valid, else None."""
     if not name:
         return None
     return VALID_LOWER.get(name.strip().lower())
+
+
+def normalise_category(value: str) -> str:
+    v = (value or "").strip().lower().replace("_", "-")
+    return v if v in CATEGORY_BY_VALUE else DEFAULT_CATEGORY
+
+
+def category_query(value: str) -> str:
+    return CATEGORY_BY_VALUE.get(normalise_category(value), CATEGORY_BY_VALUE[DEFAULT_CATEGORY])["query"]
+
+
+def looks_admin_restricted(name: str) -> bool:
+    if not name:
+        return False
+    low = name.lower()
+    return any(kw in low for kw in ADMIN_HEURISTIC_KEYWORDS)
 
 
 # ---------- JSON I/O ----------
@@ -195,7 +282,6 @@ async def startpage_search(c: httpx.AsyncClient, query: str) -> list[str]:
 
 
 async def fetch_invite_meta(c: httpx.AsyncClient, code: str) -> dict:
-    """Pull og:title / og:description from the public WhatsApp invite preview."""
     url = f"https://chat.whatsapp.com/{code}"
     html = await fetch(c, url)
     if not html:
@@ -214,21 +300,37 @@ async def fetch_invite_meta(c: httpx.AsyncClient, code: str) -> dict:
 # ---------- Group model ----------
 def make_group(
     *, name: str, invite_link: str, invite_code: str, region: str,
+    state: Optional[str] = None, district: Optional[str] = None,
+    category: str = DEFAULT_CATEGORY,
     description: Optional[str] = None, source_url: Optional[str] = None,
     discovered_via: str = "auto",
 ) -> dict:
     n = now_iso()
+    # Resolve state/district from region if not explicitly given
+    if state is None:
+        if region in INDIAN_LOCATIONS:
+            state = region
+        elif region in DISTRICT_TO_STATE:
+            state = DISTRICT_TO_STATE[region]
+        else:
+            # capital → state
+            for st, cap in INDIAN_LOCATIONS.items():
+                if cap == region:
+                    state = st
+                    break
+    if district is None:
+        if region not in INDIAN_LOCATIONS:  # not a state — treat as district/capital
+            district = region
     return {
         "id": str(uuid.uuid4()),
         "name": name,
         "invite_link": invite_link,
         "invite_code": invite_code,
         "region": region,
-        "category": CATEGORY,
-        # status: "open" = visible, "hidden" = hidden by 2+ approval reports, "invalid" = dead link
+        "state": state,
+        "district": district,
+        "category": normalise_category(category),
         "status": "open",
-        # NEW: messaging mode. "open" (anyone can post) or "readonly" (only admins post).
-        # Default "open" until crowd-flagged.
         "chat_mode": "open",
         "description": description,
         "source_url": source_url,
@@ -243,15 +345,16 @@ def make_group(
 
 
 def upsert_group(groups: list[dict], group: dict) -> bool:
-    """Returns True if a new group was added, False if it already existed."""
     for g in groups:
         if g.get("invite_code") == group["invite_code"]:
             g["last_checked"] = group["last_checked"]
             if group.get("source_url") and not g.get("source_url"):
                 g["source_url"] = group["source_url"]
-            # backfill new field on older records
             g.setdefault("chat_mode", "open")
             g.setdefault("reports_readonly", 0)
+            g.setdefault("state", group.get("state"))
+            g.setdefault("district", group.get("district"))
+            g.setdefault("category", group.get("category", DEFAULT_CATEGORY))
             return False
     groups.append(group)
     return True
@@ -267,7 +370,6 @@ def find_group(groups: list[dict], group_id: Optional[str] = None,
     return None
 
 
-# ---------- Async client factory ----------
 def http_client() -> httpx.AsyncClient:
     return httpx.AsyncClient(headers=HEADERS, follow_redirects=True)
 
