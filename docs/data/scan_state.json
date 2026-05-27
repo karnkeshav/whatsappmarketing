@@ -1,8 +1,8 @@
 {
   "is_running": false,
-  "started_at": "2026-05-26T06:52:03.791420+00:00",
-  "finished_at": "2026-05-26T06:53:11.492153+00:00",
-  "found_count": 197,
-  "open_count": 42,
-  "message": "Scan finished — 42 new groups (of 197 candidates)"
+  "started_at": "2026-05-27T07:09:42.220380+00:00",
+  "finished_at": "2026-05-27T07:10:51.728149+00:00",
+  "found_count": 205,
+  "open_count": 25,
+  "message": "Scan finished — 25 new groups (of 205 candidates)"
 }
