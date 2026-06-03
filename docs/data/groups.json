@@ -661,7 +661,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-26T06:52:50.844839+00:00",
+    "last_checked": "2026-06-03T08:24:52.632552+00:00",
     "created_at": "2026-05-26T06:52:50.844839+00:00"
   },
   {
@@ -889,7 +889,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:46.465237+00:00",
+    "last_checked": "2026-06-03T08:25:04.552958+00:00",
     "created_at": "2026-05-26T06:53:08.226861+00:00"
   },
   {
@@ -965,7 +965,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-26T06:53:10.311597+00:00",
+    "last_checked": "2026-06-03T08:25:05.104843+00:00",
     "created_at": "2026-05-26T06:53:10.311597+00:00"
   },
   {
@@ -1003,7 +1003,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:50.329971+00:00",
+    "last_checked": "2026-06-03T08:25:04.015533+00:00",
     "created_at": "2026-05-26T06:53:11.289836+00:00"
   },
   {
@@ -1022,7 +1022,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:45.297045+00:00",
+    "last_checked": "2026-06-03T08:25:07.044217+00:00",
     "created_at": "2026-05-27T07:09:53.303927+00:00"
   },
   {
@@ -1060,7 +1060,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:47.434601+00:00",
+    "last_checked": "2026-06-03T08:25:05.641268+00:00",
     "created_at": "2026-05-27T07:09:55.370777+00:00"
   },
   {
@@ -1117,7 +1117,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:43.543165+00:00",
+    "last_checked": "2026-06-03T08:25:02.823901+00:00",
     "created_at": "2026-05-27T07:09:57.104450+00:00"
   },
   {
@@ -1136,7 +1136,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:51.525782+00:00",
+    "last_checked": "2026-06-03T08:25:06.563251+00:00",
     "created_at": "2026-05-27T07:09:59.511888+00:00"
   },
   {
@@ -1421,7 +1421,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:33.401971+00:00",
+    "last_checked": "2026-06-03T08:24:48.682584+00:00",
     "created_at": "2026-05-27T07:10:33.401971+00:00"
   },
   {
@@ -1440,7 +1440,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:33.979491+00:00",
+    "last_checked": "2026-06-03T08:24:49.771586+00:00",
     "created_at": "2026-05-27T07:10:33.979491+00:00"
   },
   {
@@ -1459,7 +1459,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:26.190017+00:00",
+    "last_checked": "2026-06-03T08:24:48.119484+00:00",
     "created_at": "2026-05-27T07:10:34.586312+00:00"
   },
   {
@@ -1478,7 +1478,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-27T07:10:35.078906+00:00",
+    "last_checked": "2026-06-03T08:24:47.569855+00:00",
     "created_at": "2026-05-27T07:10:35.078906+00:00"
   },
   {
@@ -1782,7 +1782,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:28.120430+00:00",
+    "last_checked": "2026-06-03T08:24:52.087030+00:00",
     "created_at": "2026-05-29T07:00:28.120430+00:00"
   },
   {
@@ -1801,7 +1801,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:28.698717+00:00",
+    "last_checked": "2026-06-03T08:24:51.526955+00:00",
     "created_at": "2026-05-29T07:00:28.698717+00:00"
   },
   {
@@ -1820,7 +1820,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:30.529703+00:00",
+    "last_checked": "2026-06-03T08:24:47.028325+00:00",
     "created_at": "2026-05-29T07:00:30.529703+00:00"
   },
   {
@@ -1839,7 +1839,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:31.025597+00:00",
+    "last_checked": "2026-06-03T08:24:49.230250+00:00",
     "created_at": "2026-05-29T07:00:31.025597+00:00"
   },
   {
@@ -1915,7 +1915,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:44.083195+00:00",
+    "last_checked": "2026-06-03T08:25:08.703994+00:00",
     "created_at": "2026-05-29T07:00:44.083195+00:00"
   },
   {
@@ -1934,7 +1934,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:44.623387+00:00",
+    "last_checked": "2026-06-03T08:25:03.464413+00:00",
     "created_at": "2026-05-29T07:00:44.623387+00:00"
   },
   {
@@ -1953,7 +1953,7 @@
     "reports_approval": 0,
     "reports_invalid": 0,
     "reports_readonly": 0,
-    "last_checked": "2026-05-29T07:00:47.540618+00:00",
+    "last_checked": "2026-06-03T08:25:06.087933+00:00",
     "created_at": "2026-05-29T07:00:47.540618+00:00"
   },
   {
@@ -1974,5 +1974,271 @@
     "reports_readonly": 0,
     "last_checked": "2026-05-29T07:00:48.047885+00:00",
     "created_at": "2026-05-29T07:00:48.047885+00:00"
+  },
+  {
+    "id": "3a74c6ba-4ef1-4e7f-9e03-27b804bcbfe0",
+    "name": "Sales & Service Coordinator Jobs Alert Quick Jobs Placement - 1",
+    "invite_link": "https://chat.whatsapp.com/Jd24qBIA5z1DtjRANmWVoS",
+    "invite_code": "Jd24qBIA5z1DtjRANmWVoS",
+    "region": "Hyderabad",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.quickjobsplacement.com/content/whatsapp-channel",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:25:07.604106+00:00",
+    "created_at": "2026-06-03T08:24:20.194270+00:00"
+  },
+  {
+    "id": "304639bc-ad87-43c5-9bba-4ccac7d1fbba",
+    "name": "Safety Officer Jobs Alert Quick Jobs Placement",
+    "invite_link": "https://chat.whatsapp.com/CgNa4oAwvKbHjzTUphMJps",
+    "invite_code": "CgNa4oAwvKbHjzTUphMJps",
+    "region": "Hyderabad",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.quickjobsplacement.com/content/whatsapp-channel",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:25:08.148079+00:00",
+    "created_at": "2026-06-03T08:24:20.867577+00:00"
+  },
+  {
+    "id": "0d4d2c6e-e725-4025-b757-d611476ec175",
+    "name": "Pakistan Free Internet Free Earning",
+    "invite_link": "https://chat.whatsapp.com/BMNUt8ZW1vc6qo98TPyWaJ",
+    "invite_code": "BMNUt8ZW1vc6qo98TPyWaJ",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:31.881709+00:00",
+    "created_at": "2026-06-03T08:24:31.881709+00:00"
+  },
+  {
+    "id": "5111a6e6-b724-4e2e-9bac-3e98fcbbd274",
+    "name": "🚀Coming Soon 0️⃣3️⃣ - Work from Home 🏡",
+    "invite_link": "https://chat.whatsapp.com/FfXDloAmvdOEDlNkS09wV4",
+    "invite_code": "FfXDloAmvdOEDlNkS09wV4",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:32.442630+00:00",
+    "created_at": "2026-06-03T08:24:32.442630+00:00"
+  },
+  {
+    "id": "89787b73-7310-4836-b05e-64c958571acf",
+    "name": "MONEY TALKS....🤑",
+    "invite_link": "https://chat.whatsapp.com/IrhrK4JGCmFK5DwqRZVF3o",
+    "invite_code": "IrhrK4JGCmFK5DwqRZVF3o",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:32.987581+00:00",
+    "created_at": "2026-06-03T08:24:32.987581+00:00"
+  },
+  {
+    "id": "ecceedfe-029e-49fc-bd7f-e051cacc5282",
+    "name": "𝐄𝐀𝐑𝐍 𝐖𝐈𝐓𝐇 𝐒𝐀𝐑𝐘𝐎",
+    "invite_link": "https://chat.whatsapp.com/Fj89ZcvBnoUCKhaQbEYwJl",
+    "invite_code": "Fj89ZcvBnoUCKhaQbEYwJl",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:33.577875+00:00",
+    "created_at": "2026-06-03T08:24:33.577875+00:00"
+  },
+  {
+    "id": "bbd6f4f5-39f9-4d28-88fe-dd805ece610b",
+    "name": "𝕺𝖓𝖑𝖎𝖓𝖊 𝕰𝖆𝖗𝖓𝖎𝖓𝖌 𝖕𝖑𝖆𝖙𝖋𝖔𝖗𝖒 𝖀𝖕𝖉𝖆𝖙𝖊🤑😎",
+    "invite_link": "https://chat.whatsapp.com/FSRT9ch1wPVJHHfeHhfF6P",
+    "invite_code": "FSRT9ch1wPVJHHfeHhfF6P",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:34.119687+00:00",
+    "created_at": "2026-06-03T08:24:34.119687+00:00"
+  },
+  {
+    "id": "d16cbbe7-c4b4-4eb2-ab17-28b982bc3c6e",
+    "name": "Online work Map Review Work",
+    "invite_link": "https://chat.whatsapp.com/L1XSBLUcTVCA2IYfbco5w1",
+    "invite_code": "L1XSBLUcTVCA2IYfbco5w1",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:34.687986+00:00",
+    "created_at": "2026-06-03T08:24:34.687986+00:00"
+  },
+  {
+    "id": "86bd7739-50f8-4308-99a6-89ca047b3afb",
+    "name": "Online Drone",
+    "invite_link": "https://chat.whatsapp.com/Hgq4i6yOIizAjD80IvSH0E",
+    "invite_code": "Hgq4i6yOIizAjD80IvSH0E",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:35.258764+00:00",
+    "created_at": "2026-06-03T08:24:35.258764+00:00"
+  },
+  {
+    "id": "d09295d9-a022-4e5c-ae3e-8ccee2faf08a",
+    "name": "SIGN UP FOR MONEY SUPREME",
+    "invite_link": "https://chat.whatsapp.com/ETlCzrNVnpaB6mmKJ8304e",
+    "invite_code": "ETlCzrNVnpaB6mmKJ8304e",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:36.168883+00:00",
+    "created_at": "2026-06-03T08:24:36.168883+00:00"
+  },
+  {
+    "id": "33653962-2565-458e-b45e-26afe82a7996",
+    "name": "Real online work",
+    "invite_link": "https://chat.whatsapp.com/Dippkd1GRIp5kp9geNwScW",
+    "invite_code": "Dippkd1GRIp5kp9geNwScW",
+    "region": "Bihar",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://www.whtsagrouplinks.com/work-from-home-whatsapp-group-links/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:36.696533+00:00",
+    "created_at": "2026-06-03T08:24:36.696533+00:00"
+  },
+  {
+    "id": "3abb1361-eb24-4a49-9fcf-aed790675f60",
+    "name": "Jobgaga- Accountant users",
+    "invite_link": "https://chat.whatsapp.com/Dbk1LgPv0rX4Yjs27WWew5",
+    "invite_code": "Dbk1LgPv0rX4Yjs27WWew5",
+    "region": "Delhi",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://jobgaga.wordpress.com/delhi/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:46.390583+00:00",
+    "created_at": "2026-06-03T08:24:46.390583+00:00"
+  },
+  {
+    "id": "238b6666-fc7d-4795-8345-d4c011e701f5",
+    "name": "💎2025 SPOTO⚡Flash Sale IT Study Group-3",
+    "invite_link": "https://chat.whatsapp.com/FlhXcsdr11F3uSWjikIpNx",
+    "invite_code": "FlhXcsdr11F3uSWjikIpNx",
+    "region": "Delhi",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://jobgaga.wordpress.com/delhi/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:50.342161+00:00",
+    "created_at": "2026-06-03T08:24:50.342161+00:00"
+  },
+  {
+    "id": "62d40912-abff-452b-b599-eacf6633803a",
+    "name": "Delhi Product Manger Jobs",
+    "invite_link": "https://chat.whatsapp.com/ET8wLEhWFFHLPNfjATdwUm",
+    "invite_code": "ET8wLEhWFFHLPNfjATdwUm",
+    "region": "Delhi",
+    "category": "jobs",
+    "status": "open",
+    "chat_mode": "open",
+    "description": "WhatsApp Group Invite",
+    "source_url": "https://jobgaga.wordpress.com/delhi/",
+    "discovered_via": "auto",
+    "reports_works": 0,
+    "reports_approval": 0,
+    "reports_invalid": 0,
+    "reports_readonly": 0,
+    "last_checked": "2026-06-03T08:24:50.964615+00:00",
+    "created_at": "2026-06-03T08:24:50.964615+00:00"
   }
 ]
