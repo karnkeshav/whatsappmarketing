@@ -22,6 +22,7 @@ import discover as discover_mod
 
 GITHUB_API = "https://api.github.com"
 HIDE_THRESHOLD = 2
+APPROVAL_HIDE_THRESHOLD = 1  # hide immediately on first approval report
 READONLY_THRESHOLD = 2
 
 KV_RE = re.compile(r"^[-*]\s*([a-zA-Z_]+)\s*:\s*(.+?)\s*$", re.MULTILINE)
@@ -171,9 +172,9 @@ async def handle_report(issue: dict, groups: list[dict]) -> tuple[bool, str]:
     g[field] = (g.get(field, 0) or 0) + 1
     g["last_checked"] = now_iso()
 
-    if g.get("reports_approval", 0) >= HIDE_THRESHOLD:
+    if g.get("reports_approval", 0) >= APPROVAL_HIDE_THRESHOLD:
         g["status"] = "hidden"
-        return True, f"Counted '{kind}'. Group **hidden** (≥{HIDE_THRESHOLD} approval reports)."
+        return True, f"Counted '{kind}'. Group **hidden** (requires admin approval to join)."
     if g.get("reports_invalid", 0) >= HIDE_THRESHOLD:
         g["status"] = "invalid"
         return True, f"Counted '{kind}'. Group marked **invalid** (≥{HIDE_THRESHOLD} invalid reports)."
