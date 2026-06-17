@@ -180,7 +180,8 @@ async def handle_report(issue: dict, groups: list[dict]) -> tuple[bool, str]:
         return True, f"Counted '{kind}'. Group marked **invalid** (≥{HIDE_THRESHOLD} invalid reports)."
     if g.get("reports_readonly", 0) >= READONLY_THRESHOLD and g.get("chat_mode") != "readonly":
         g["chat_mode"] = "readonly"
-        return True, f"Counted '{kind}'. Group flagged as **read-only** but stays visible so users can DM the admin."
+        g["status"] = "hidden"
+        return True, f"Counted '{kind}'. Group flagged as **read-only** and hidden (only admins can post)."
     return True, (
         f"Counted '{kind}'. Tally → works:{g['reports_works']} "
         f"approval:{g['reports_approval']} invalid:{g['reports_invalid']} "
