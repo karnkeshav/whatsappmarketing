@@ -14,7 +14,7 @@ export default function useDirectory(region) {
   const fetchAll = useCallback(async () => {
     try {
       const [gs, st, sc] = await Promise.all([listGroups(region), getStats(), getScanStatus()]);
-      setGroups(gs);
+      setGroups(gs.filter(g => (g.reports_approval || 0) < 1));
       setStats(st);
       setScan(sc);
     } catch (e) {
