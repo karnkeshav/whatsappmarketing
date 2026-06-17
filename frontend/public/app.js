@@ -119,6 +119,7 @@
   function isVisible(g) {
     if ((g.status || "open") !== "open") return false;
     if ((g.reports_approval || 0) >= 1) return false;
+    if ((g.chat_mode || "open") === "readonly") return false;
     return true;
   }
   function chatModeOf(g) { return g.chat_mode || "open"; }
