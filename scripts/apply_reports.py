@@ -124,7 +124,7 @@ async def handle_submit(c, issue: dict, groups: list[dict]) -> tuple[bool, str]:
     if not region:
         return False, "Region must be an Indian state or capital."
     category = kv.get("category", "jobs").strip().lower()
-    if category not in {"jobs", "societies"}:
+    if category not in {"jobs", "lawyers", "societies"}:
         category = "jobs"
     code = extract_invite_code(link)
     if not code:
@@ -202,7 +202,7 @@ async def handle_scan_request(c, issue: dict, groups: list[dict]) -> tuple[bool,
     if not region:
         return False, f"Region {region_raw!r} is not a recognised Indian state or capital."
     category = kv.get("category", "jobs").strip().lower()
-    if category not in {"jobs", "societies"}:
+    if category not in {"jobs", "lawyers", "societies"}:
         category = "jobs"
     try:
         max_per = max(3, min(int(kv.get("max_per_region", "12") or 12), 30))

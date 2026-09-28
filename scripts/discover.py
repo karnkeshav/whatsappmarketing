@@ -24,6 +24,13 @@ async def collect_candidate_pages(c, region: str, category: str) -> list[str]:
             '{region} gated community whatsapp group join',
             '{region} residential whatsapp group join',
         ]
+    elif category.lower() == "lawyers":
+        queries = [
+            'whatsapp group link {region} lawyers 2026',
+            'whatsapp group link {region} advocates 2026',
+            '{region} lawyers whatsapp group join',
+            '{region} legal whatsapp group join',
+        ]
     else:
         queries = [
             'chat.whatsapp.com {category} {region} group link',
